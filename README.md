@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./img/logo.png" width="250px" />
+  <img src="./logo.png" width="250px" />
 </p>
 
 <h1 align="center">Converter File</h1>
