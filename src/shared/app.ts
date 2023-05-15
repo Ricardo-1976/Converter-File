@@ -7,7 +7,7 @@ import swaggerDocs from '@docs/index'
 import { AppError } from './errors/AppError';
 import routes from './routes';
 import { versions } from '@utils/versions';
-import logger from 'Config/logger';
+import logger from '@config/logger';
 
 const app = express();
 
