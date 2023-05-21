@@ -1,4 +1,6 @@
+import 'reflect-metadata';
 import 'express-async-errors';
+import '@config/environments';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
@@ -7,9 +9,12 @@ import swaggerDocs from '@docs/index'
 import { AppError } from './errors/AppError';
 import routes from './routes';
 import { versions } from '@utils/versions';
-import logger from '@config/logger';
+import { AppDataSource } from '@config/db/postgres';
 
 const app = express();
+//AppDataSource.initialize();
+
+import '@shared/container'
 
 app.use(express.json());
 app.use(cors());

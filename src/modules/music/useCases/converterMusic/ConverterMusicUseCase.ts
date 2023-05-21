@@ -3,34 +3,45 @@ import ffmpegPath from "@ffmpeg-installer/ffmpeg";
 import logger from "@config/logger";
 import { removeFile } from "@utils/file";
 import { AppError } from "@shared/errors/AppError";
+import { messages } from "@modules/music/Messages/music";
 
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 class ConverterMusicUseCase {
   async execute(file: Express.Multer.File, base: string, para: string): Promise<void> {
   
-    const name = file.filename.slice(-3);
-
-    if (name != 'mp4') {
-      removeFile(`./tmp/music/${file.filename}`);
-      throw new AppError('Arquivo nao e compativel com a base');
-    } 
-
-    const fileName = para;
+    const path = './tmp/music/';
 
     const name_music = file.originalname.slice(0, -3);
 
-    ffmpeg('./tmp/music/' + file.filename)
+    const name_type = file.mimetype;
+
+    const formats = ['mp3', 'wav', 'ogg'];
+    
+    const format = formats.find((format) => format === para);
+
+    if(!format) {
+      removeFile(`${path}`+`${file.filename}`);
+      throw new AppError(messages.formatSupported);
+    }
+
+    if(name_type != base) {
+      removeFile(`${path}`+`${file.filename}`);
+      throw new AppError(messages.fileNotCompatible);
+    }
+
+    ffmpeg(path + file.filename)
+      .output(path + name_music+para)
       .toFormat(para)
-      .on("end", () => { 
-        removeFile(`./tmp/music/${file.filename}`);
+      .on('end', () => {
+        logger.info(messages.conversionCompleted);
+        removeFile(`${path}`+`${file.filename}`);
       })
-      .on("error", (error) => {
-        logger.error(error);
-        removeFile(`./tmp/music/${file.filename}`);
+      .on('error', (err) => {
+        logger.error(messages.errorConversion, err); 
+        removeFile(`${path}`+`${file.filename}`);
       })
-      .saveToFile(`./tmp/music/` + name_music+fileName);
-      logger.info('Conversion completed.')
+      .run();
   };
 }
 
