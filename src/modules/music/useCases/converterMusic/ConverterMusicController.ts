@@ -8,7 +8,7 @@ class ConverterMusicController {
 
     const converterMusicUseCase = new ConverterMusicUseCase();
 
-     await converterMusicUseCase.execute( file, base, para );
+     await converterMusicUseCase.execute( file, para, base );
 
     return response.status(201).send();
   }

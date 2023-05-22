@@ -8,7 +8,7 @@ import { messages } from "@modules/music/Messages/music";
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 class ConverterMusicUseCase {
-  async execute(file: Express.Multer.File, base: string, para: string): Promise<void> {
+  async execute(file: Express.Multer.File, para: string): Promise<void> {
   
     const path = './tmp/music/';
 
@@ -17,15 +17,19 @@ class ConverterMusicUseCase {
     const name_type = file.mimetype;
 
     const formats = ['mp3', 'wav', 'ogg'];
+
+    const formt_original = ['audio/wave', 'audio/ogg', 'audio/mpeg', 'video/mp4'];
     
+    const format_origin = formt_original.find((formt_origina) => formt_origina === name_type);
+
     const format = formats.find((format) => format === para);
 
     if(!format) {
       removeFile(`${path}`+`${file.filename}`);
       throw new AppError(messages.formatSupported);
     }
-
-    if(name_type != base) {
+    
+    if(!format_origin) {
       removeFile(`${path}`+`${file.filename}`);
       throw new AppError(messages.fileNotCompatible);
     }
