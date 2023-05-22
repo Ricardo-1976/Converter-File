@@ -4,10 +4,11 @@ import { ConverterMusicUseCase } from "./ConverterMusicUseCase";
 class ConverterMusicController {
   async handle(request: Request, response: Response): Promise<Response> {
     const  file = request.file;
+    const { base, para } = request.query;
 
     const converterMusicUseCase = new ConverterMusicUseCase();
 
-     await converterMusicUseCase.execute(file);
+     await converterMusicUseCase.execute( file, base, para );
 
     return response.status(201).send();
   }

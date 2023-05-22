@@ -1,24 +1,48 @@
-import logger from "@config/logger";
-import { response, request } from "express";
 import ffmpeg from "fluent-ffmpeg";
+import ffmpegPath from "@ffmpeg-installer/ffmpeg";
+import logger from "@config/logger";
+import { removeFile } from "@utils/file";
+import { AppError } from "@shared/errors/AppError";
+import { messages } from "@modules/music/Messages/music";
+
+ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 class ConverterMusicUseCase {
-  async execute( file: Express.Multer.File ): Promise<void> {
-  const fileName = ".mp3";
+  async execute(file: Express.Multer.File, base: string, para: string): Promise<void> {
+  
+    const path = './tmp/music/';
 
-  ffmpeg('./tmp/music/' + file.filename)
-    .toFormat("mp3")
-    .on("end", () => {
-      return response.download(__dirname + fileName, (error) => {
-        if (error) throw error;
-        console.log("conversion success");
-        // Remove file
-      });
-    })
-    .on("error", (error) => {
-      console.log(error);
-      // Remove file
-    }).saveToFile('./tmp/music/' + file.filename+fileName)
-  } 
-}  
+    const name_music = file.originalname.slice(0, -3);
+
+    const name_type = file.mimetype;
+
+    const formats = ['mp3', 'wav', 'ogg'];
+    
+    const format = formats.find((format) => format === para);
+
+    if(!format) {
+      removeFile(`${path}`+`${file.filename}`);
+      throw new AppError(messages.formatSupported);
+    }
+
+    if(name_type != base) {
+      removeFile(`${path}`+`${file.filename}`);
+      throw new AppError(messages.fileNotCompatible);
+    }
+
+    ffmpeg(path + file.filename)
+      .output(path + name_music+para)
+      .toFormat(para)
+      .on('end', () => {
+        logger.info(messages.conversionCompleted);
+        removeFile(`${path}`+`${file.filename}`);
+      })
+      .on('error', (err) => {
+        logger.error(messages.errorConversion, err); 
+        removeFile(`${path}`+`${file.filename}`);
+      })
+      .run();
+  };
+}
+
 export { ConverterMusicUseCase };
