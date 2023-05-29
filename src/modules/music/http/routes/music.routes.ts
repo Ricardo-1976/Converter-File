@@ -9,7 +9,5 @@ const uploadMusic = multer(uploadConfig.upload("./tmp/music"));
 
 const converterMusicController = new ConverterMusicController();
 
-//app.use(multer({ storage }).single("file"));
-
 musicRoutes.post('/music', uploadMusic.single('music'), converterMusicController.handle);
 export { musicRoutes };
