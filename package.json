@@ -1,8 +1,11 @@
 {
-  "name": "Converter-File",
+  "name": "converter-file",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:Ricardo-1976/Converter-File.git",
+  "main": "build/shared/server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Ricardo-1976/Converter-File.git"
+  },
   "author": "Ricardo João António <90958374+Ricardo-1976@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
@@ -76,5 +79,10 @@
     "typeorm-model-generator": "^0.4.6",
     "uuid": "^9.0.0",
     "yup": "^1.1.1"
-  }
+  },
+  "description": "<p align=\"center\">   <img src=\"./logo.png\" width=\"250px\" /> </p>",
+  "bugs": {
+    "url": "https://github.com/Ricardo-1976/Converter-File/issues"
+  },
+  "homepage": "https://github.com/Ricardo-1976/Converter-File#readme"
 }

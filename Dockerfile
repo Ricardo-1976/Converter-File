@@ -2,7 +2,7 @@ FROM node:16
 
 ENV PORT=3331
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/shared/app
 
 COPY package*.json ./
 
@@ -16,4 +16,4 @@ RUN npm run build
 
 EXPOSE 3331
 
-CMD [ "node", "./build/server.js" ]
+CMD [ "node", "./build/shared/server.js" ]

@@ -9,12 +9,8 @@ import swaggerDocs from '@docs/index'
 import { AppError } from './errors/AppError';
 import routes from './routes';
 import { versions } from '@utils/versions';
-import { AppDataSource } from '@config/db/postgres';
 
 const app = express();
-//AppDataSource.initialize();
-
-import '@shared/container'
 
 app.use(express.json());
 app.use(cors());
