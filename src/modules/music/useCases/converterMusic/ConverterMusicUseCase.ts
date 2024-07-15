@@ -3,26 +3,27 @@ import ffmpegPath from "@ffmpeg-installer/ffmpeg";
 import logger from "@config/logger";
 import { removeFile } from "@utils/file";
 import { AppError } from "@shared/errors/AppError";
-import { messages } from "@modules/music/Messages/music";
+import { messages } from "@modules/music/Messages/messages";
 
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 
+interface IRequest {
+  to: any;
+  file: any;
+}
 class ConverterMusicUseCase {
-  async execute(file: Express.Multer.File, para: string): Promise<void> {
+  async execute({file, to }: IRequest): Promise<void> {
   
     const path = './tmp/music/';
-
+    logger.info(to);
     const name_music = file.originalname.slice(0, -3);
-
     const name_type = file.mimetype;
 
-    const formats = ['mp3', 'wav', 'ogg'];
-
-    const formt_original = ['audio/wave', 'audio/ogg', 'audio/mpeg', 'video/mp4'];
+    const formats = ['mp3', 'wav', 'ogg', 'flac'];
+    const formt_original = ['audio/wave', 'audio/ogg', 'audio/mpeg', 'video/mp4', 'audio/x-flac'];
     
-    const format_origin = formt_original.find((formt_origina) => formt_origina === name_type);
-
-    const format = formats.find((format) => format === para);
+    const format_origin = formt_original.includes(name_type);
+    const format = formats.includes(file.originalname.slice(-3));
 
     if(!format) {
       removeFile(`${path}`+`${file.filename}`);
@@ -35,8 +36,8 @@ class ConverterMusicUseCase {
     }
 
     ffmpeg(path + file.filename)
-      .output(path + name_music+para)
-      .toFormat(para)
+      .output(path + name_music+to)
+      .toFormat(to)
       .on('end', () => {
         logger.info(messages.conversionCompleted);
         removeFile(`${path}`+`${file.filename}`);
