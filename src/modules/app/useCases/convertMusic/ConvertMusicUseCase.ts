@@ -4,26 +4,26 @@ import { removeFile } from "@utils/file";
 import { AppError } from "@shared/errors/AppError";
 import { messages } from "@modules/app/Messages/messages";
 import logger from "@config/logger";
+import { removeCharsAfterDot } from "@utils/removeCharsAfterDot";
+import { IFileDTO } from "@modules/app/dtos/fileDto";
 
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 
-interface IRequest {
-  to: any;
-  file: any;
-}
 class ConvertMusicUseCase {
-  async execute({file, to }: IRequest): Promise<void> {
+  async execute({file, to }: IFileDTO): Promise<void> {
   
     const path = './tmp/music/';
-   
-    const name_music = file.originalname.slice(0, -3);
+    const name_music = removeCharsAfterDot(file.originalname);
     const name_type = file.mimetype;
 
     const formats = ['mp3', 'wav', 'ogg', 'flac'];
-    const formt_original = ['audio/wave', 'audio/ogg', 'audio/mpeg', 'video/mp4', 'audio/x-flac'];
+    const formt_original = [
+      'audio/wave', 'audio/ogg', 'audio/mpeg', 'video/mp4', 
+      'audio/x-flac'
+    ];
     
     const format_origin = formt_original.includes(name_type);
-    const format = formats.includes(file.originalname.slice(-3));
+    const format = formats.includes(to);
 
     if(!format) {
       removeFile(`${path}`+`${file.filename}`);

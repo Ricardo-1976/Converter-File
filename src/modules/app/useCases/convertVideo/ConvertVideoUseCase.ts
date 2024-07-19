@@ -4,18 +4,16 @@ import logger from "@config/logger";
 import { removeFile } from "@utils/file";
 import { AppError } from "@shared/errors/AppError";
 import { messages } from "@modules/app/Messages/messages";
+import { removeCharsAfterDot } from "@utils/removeCharsAfterDot";
+import { IFileDTO } from "@modules/app/dtos/fileDto";
 
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 
-interface IRequest {
-  to: any;
-  file: any;
-}
 class ConvertVideoUseCase {
-  async execute({file, to }: IRequest): Promise<void> {
+  async execute({file, to }: IFileDTO): Promise<void> {
   
     const path = './tmp/video/';
-    const name_video = file.originalname.slice(0, -3);
+    const name_video = removeCharsAfterDot(file.originalname)
     const name_type = file.mimetype;
 
     const formats = ['mp4', 'avi', 'mkv', 'mov', 'flv'];
@@ -25,7 +23,7 @@ class ConvertVideoUseCase {
     ];
     
     const format_origin = formt_original.includes(name_type);
-    const format = formats.includes(file.originalname.slice(-3));
+    const format = formats.includes(to);
 
     if(!format) {
       removeFile(`${path}`+`${file.filename}`);
