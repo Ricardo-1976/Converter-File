@@ -9,11 +9,12 @@
 <br />
 Descrição da API de Conversão de Áudio, Vídeo, Imagem e Documento
 
-A API de Conversão é uma solução abrangente que permite aos desenvolvedores converter arquivos de áudio, vídeo, imagem e documento para diferentes formatos. Com as tecnologias FFmpeg e Sharp integradas, a API oferece recursos avançados para manipular e transformar diversos tipos de arquivos multimídia.
+A API de Conversão é uma solução abrangente que permite aos desenvolvedores converter arquivos de áudio, vídeo, imagem e documento para diferentes formatos. Com as tecnologias FFmpeg, libreoffice-convert e Sharp integradas, a API oferece recursos avançados para manipular e transformar diversos tipos de arquivos multimídia.
 
 Principais Tecnologias Utilizadas:
 - FFmpeg: Uma biblioteca poderosa e amplamente utilizada para manipulação de áudio e vídeo. O FFmpeg oferece funcionalidades abrangentes, como conversão de formatos, ajuste de qualidade, corte, redimensionamento, aplicação de filtros, entre outros.
 - Sharp: Uma biblioteca versátil para processamento de imagens em Node.js. O Sharp permite redimensionar, recortar, aplicar filtros, ajustar cores e converter imagens para diferentes formatos.
+- libreoffice-convert é uma ferramenta que facilita a conversão de documentos entre diferentes formatos usando o LibreOffice. Ela fornece uma interface simples para integrar a poderosa funcionalidade de conversão do LibreOffice diretamente em aplicações Node.js,
 
 Recursos da API:
 1. Conversão de Áudio:
@@ -26,7 +27,7 @@ Recursos da API:
    - Suporte para vários formatos de imagem, incluindo ['jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp', 'svg'].
 
 4. Conversão de Documento:
-   - Suporte para diferentes formatos de documentos, como DOCX, PDF, ODT, entre outros.
+   - Suporte para diferentes formatos de documentos, como ['pdf', 'doc', 'docx', 'odt', 'txt', 'rtf'].
 
 Benefícios e Casos de Uso:
 - Flexibilidade: A API oferece uma ampla gama de opções de conversão, permitindo personalizar os parâmetros conforme necessário.
